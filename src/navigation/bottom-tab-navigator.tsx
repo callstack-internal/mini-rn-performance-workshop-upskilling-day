@@ -29,7 +29,6 @@ export const BottomTabNavigator = () => {
         tabBarIcon: Noop,
         tabBarLabelStyle: styles.tabBarLabel,
         tabBarItemStyle: styles.tabBarItem,
-        lazy: false,
       })}>
       <Tab.Screen name="Exhibitions" component={Exhibitions} />
       <Tab.Screen name="Artworks" component={Artworks} />

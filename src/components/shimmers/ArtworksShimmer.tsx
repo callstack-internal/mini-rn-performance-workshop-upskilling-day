@@ -9,39 +9,39 @@ type Props = {
   colorMode: 'dark' | 'light';
 };
 
-export const ArtworksShimmer = ({colorMode}: Props) => {
-  const protoArray = [1, 2, 3];
+const protoArray = [1, 2, 3];
 
-  return (
-    <>
-      {protoArray.map(item => (
-        <ShimmerContainer key={item}>
-          <ShimmerTitle
-            shimmerColors={[
-              colors[colorMode].shimmer_background,
-              colors[colorMode].shimmer_highlight,
-              colors[colorMode].shimmer_background,
-            ]}
-          />
-          <ShimmerDescription
-            shimmerColors={[
-              colors[colorMode].shimmer_background,
-              colors[colorMode].shimmer_highlight,
-              colors[colorMode].shimmer_background,
-            ]}
-          />
-          <ShimmerImage
-            shimmerColors={[
-              colors[colorMode].shimmer_background,
-              colors[colorMode].shimmer_highlight,
-              colors[colorMode].shimmer_background,
-            ]}
-          />
-        </ShimmerContainer>
-      ))}
-    </>
-  );
-};
+export const ArtworksShimmer = React.memo(({colorMode}: Props) => (
+  <>
+    {protoArray.map(item => (
+      <ShimmerContainer key={item}>
+        <ShimmerTitle
+          shimmerColors={[
+            colors[colorMode].shimmer_background,
+            colors[colorMode].shimmer_highlight,
+            colors[colorMode].shimmer_background,
+          ]}
+        />
+        <ShimmerDescription
+          shimmerColors={[
+            colors[colorMode].shimmer_background,
+            colors[colorMode].shimmer_highlight,
+            colors[colorMode].shimmer_background,
+          ]}
+        />
+        <ShimmerImage
+          shimmerColors={[
+            colors[colorMode].shimmer_background,
+            colors[colorMode].shimmer_highlight,
+            colors[colorMode].shimmer_background,
+          ]}
+        />
+      </ShimmerContainer>
+    ))}
+  </>
+));
+
+ArtworksShimmer.displayName = 'ArtworksShimmer';
 
 const ShimmerContainer = styled.View`
   margin-bottom: 24px;

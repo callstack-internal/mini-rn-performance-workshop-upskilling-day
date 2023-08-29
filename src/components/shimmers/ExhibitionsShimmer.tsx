@@ -9,46 +9,46 @@ type Props = {
   colorMode: 'dark' | 'light';
 };
 
-export const ExhibitionsShimmer = ({colorMode}: Props) => {
-  const protoArray = [1, 2, 3];
+const protoArray = [1, 2, 3];
 
-  return (
-    <>
-      {protoArray.map(item => (
-        <ShimmerContainer key={item}>
-          <ShimmerTitle
-            shimmerColors={[
-              colors[colorMode].shimmer_background,
-              colors[colorMode].shimmer_highlight,
-              colors[colorMode].shimmer_background,
-            ]}
-          />
-          <ShimmerDescription
-            shimmerColors={[
-              colors[colorMode].shimmer_background,
-              colors[colorMode].shimmer_highlight,
-              colors[colorMode].shimmer_background,
-            ]}
-          />
-          <ShimmerImage
-            shimmerColors={[
-              colors[colorMode].shimmer_background,
-              colors[colorMode].shimmer_highlight,
-              colors[colorMode].shimmer_background,
-            ]}
-          />
-          <ShimmerLinkButton
-            shimmerColors={[
-              colors[colorMode].shimmer_background,
-              colors[colorMode].shimmer_highlight,
-              colors[colorMode].shimmer_background,
-            ]}
-          />
-        </ShimmerContainer>
-      ))}
-    </>
-  );
-};
+export const ExhibitionsShimmer = React.memo(({colorMode}: Props) => (
+  <>
+    {protoArray.map(item => (
+      <ShimmerContainer key={item}>
+        <ShimmerTitle
+          shimmerColors={[
+            colors[colorMode].shimmer_background,
+            colors[colorMode].shimmer_highlight,
+            colors[colorMode].shimmer_background,
+          ]}
+        />
+        <ShimmerDescription
+          shimmerColors={[
+            colors[colorMode].shimmer_background,
+            colors[colorMode].shimmer_highlight,
+            colors[colorMode].shimmer_background,
+          ]}
+        />
+        <ShimmerImage
+          shimmerColors={[
+            colors[colorMode].shimmer_background,
+            colors[colorMode].shimmer_highlight,
+            colors[colorMode].shimmer_background,
+          ]}
+        />
+        <ShimmerLinkButton
+          shimmerColors={[
+            colors[colorMode].shimmer_background,
+            colors[colorMode].shimmer_highlight,
+            colors[colorMode].shimmer_background,
+          ]}
+        />
+      </ShimmerContainer>
+    ))}
+  </>
+));
+
+ExhibitionsShimmer.displayName = 'ExhibitionsShimmer';
 
 const ShimmerContainer = styled.View`
   margin-bottom: 24px;

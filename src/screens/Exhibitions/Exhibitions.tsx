@@ -7,7 +7,7 @@ import {
   Linking,
   FlatList,
 } from 'react-native';
-import {useInfiniteQuery} from '@tanstack/react-query'
+import {useInfiniteQuery} from '@tanstack/react-query';
 import {ExhibitionsShimmer} from '~components/shimmers';
 import {artService} from '~services/artService';
 import {colors} from '~utils/colors';
@@ -22,7 +22,7 @@ import {
   LoadingCaption,
   SubHeader,
 } from './Exhibitions.styled';
-import { NextExhibitionTimer } from '~components/index';
+import {NextExhibitionTimer} from '~components/index';
 
 type Props = {};
 
@@ -44,7 +44,7 @@ export const Exhibitions = ({}: Props) => {
     {getNextPageParam: page => page.pagination.current_page + 1},
   );
 
-  const getExhibitionsArray = () => {
+  const exhibitionsArray = React.useMemo(() => {
     if (!data?.pages.length) {
       return null;
     }
@@ -54,7 +54,7 @@ export const Exhibitions = ({}: Props) => {
     );
 
     return result;
-  };
+  }, [data]);
 
   return (
     <SafeAreaView style={backgroundStyle}>
@@ -68,14 +68,14 @@ export const Exhibitions = ({}: Props) => {
           Available Exhibitions
         </SubHeader>
         <NextExhibitionTimer />
-        {getExhibitionsArray() === null ? (
+        {exhibitionsArray === null ? (
           <ExhibitionsShimmer colorMode={currentMode} />
         ) : (
           <FlatList
             windowSize={2}
             initialNumToRender={4}
             onEndReachedThreshold={80}
-            data={getExhibitionsArray()}
+            data={exhibitionsArray}
             onEndReached={() => fetchNextPage()}
             keyExtractor={item => item.id}
             renderItem={({item}) => (
@@ -96,7 +96,7 @@ type ListItemProps = {
   currentMode: 'light' | 'dark';
 };
 
-const ExhibitionListItem = ({item, currentMode}: ListItemProps) => {
+const ExhibitionListItem = React.memo(({item, currentMode}: ListItemProps) => {
   const onPressLink = () => !!item?.web_url && Linking.openURL(item.web_url);
 
   return (
@@ -116,4 +116,6 @@ const ExhibitionListItem = ({item, currentMode}: ListItemProps) => {
       ) : null}
     </Item>
   );
-};
+});
+
+ExhibitionListItem.displayName = 'ExhibitionListItem';

@@ -62,7 +62,7 @@ type ListItemProps = {
   currentMode: 'dark' | 'light';
 };
 
-const ArtworkListItem = ({item, currentMode}: ListItemProps) => (
+const ArtworkListItem = React.memo(({item, currentMode}: ListItemProps) => (
   <Item>
     <ItemTitle color={colors[currentMode].text}>{item?.title}</ItemTitle>
     <ItemDescription color={colors[currentMode].text}>
@@ -75,4 +75,6 @@ const ArtworkListItem = ({item, currentMode}: ListItemProps) => (
       }}
     />
   </Item>
-);
+));
+
+ArtworkListItem.displayName = 'ArtworkListItem'

@@ -5,9 +5,9 @@ import {
   StatusBar,
   TouchableOpacity,
   Linking,
-  ScrollView,
   NativeScrollEvent,
   NativeSyntheticEvent,
+  FlatList,
 } from 'react-native';
 import {useInfiniteQuery} from '@tanstack/react-query'
 import {ExhibitionsShimmer} from '~components/shimmers';
@@ -102,28 +102,17 @@ export const Exhibitions = ({}: Props) => {
         {getExhibitionsArray() === null ? (
           <ExhibitionsShimmer colorMode={currentMode} />
         ) : (
-          <ScrollView onMomentumScrollEnd={handleOnScrollEnd}>
-            {getExhibitionsArray()?.map((item: any) => (
-              <Item key={item.id}>
-                <ItemTitle color={colors[currentMode].text}>
-                  {item?.title}
-                </ItemTitle>
-                <ItemDescription color={colors[currentMode].text}>
-                  {item?.short_description}
-                </ItemDescription>
-                <ItemImagePlaceholder
-                  isDark={isDarkMode}
-                  source={{uri: item?.image_url}}
-                />
-                {item.web_url ? (
-                  <TouchableOpacity
-                    onPress={() => Linking.openURL(item.web_url)}>
-                    <ItemLinkButton>See more</ItemLinkButton>
-                  </TouchableOpacity>
-                ) : null}
-              </Item>
-            ))}
-          </ScrollView>
+          <FlatList
+            windowSize={2}
+            initialNumToRender={4}
+            onEndReachedThreshold={80}
+            data={getExhibitionsArray()}
+            onEndReached={() => fetchNextPage()}
+            keyExtractor={item => item.id}
+            renderItem={({item}) => (
+              <ExhibitionListItem item={item} currentMode={currentMode} />
+            )}
+          />
         )}
         {isFetchingNextPage ? (
           <LoadingCaption>Loading More Exhibitions...</LoadingCaption>
@@ -144,4 +133,31 @@ const formatTimeLeft = (date: Date) => {
   const seconds = Math.floor((dateDiff % (1000 * 60)) / 1000);
 
   return `${days}d ${hours}h ${minutes}min ${seconds}sec`;
+};
+
+type ListItemProps = {
+  item: any;
+  currentMode: 'light' | 'dark';
+};
+
+const ExhibitionListItem = ({item, currentMode}: ListItemProps) => {
+  const onPressLink = () => !!item?.web_url && Linking.openURL(item.web_url);
+
+  return (
+    <Item key={item?.id}>
+      <ItemTitle color={colors[currentMode].text}>{item?.title}</ItemTitle>
+      <ItemDescription color={colors[currentMode].text}>
+        {item?.short_description}
+      </ItemDescription>
+      <ItemImagePlaceholder
+        isDark={currentMode === 'dark'}
+        source={{uri: item?.image_url}}
+      />
+      {item?.web_url ? (
+        <TouchableOpacity onPress={onPressLink}>
+          <ItemLinkButton>See more</ItemLinkButton>
+        </TouchableOpacity>
+      ) : null}
+    </Item>
+  );
 };
